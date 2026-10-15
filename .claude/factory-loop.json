@@ -1,0 +1,4 @@
+{
+  "gateCommands": ["npm run lint", "npm test"],
+  "maxInFlightIssues": 2
+}

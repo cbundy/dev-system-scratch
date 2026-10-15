@@ -1,0 +1,26 @@
+name: CI
+
+# The project gates, with the same commands as the no-mistakes lint/test steps
+# (.no-mistakes.yaml) and the factory loop's gateCommands (.claude/factory-loop.json),
+# so local gates and CI can never drift apart. The job's name, `ci`, is the check that
+# branch protection on main requires.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
