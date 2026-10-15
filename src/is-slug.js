@@ -16,4 +16,4 @@ function isSlug(text) {
 
 module.exports = { isSlug };
 
-// smoke 
+// smoke
