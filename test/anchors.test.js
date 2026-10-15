@@ -29,3 +29,21 @@ test("is pure across calls", () => {
 test("empty input returns an empty array", () => {
   assert.deepEqual(toAnchors([]), []);
 });
+
+test("non-array input throws a clear TypeError", () => {
+  for (const bad of ["a", undefined, {}]) {
+    assert.throws(() => toAnchors(bad), {
+      name: "TypeError",
+      message: "toAnchors expects an array of strings",
+    });
+  }
+});
+
+test("a non-string item still fails in slugify, not the array guard", () => {
+  assert.throws(
+    () => toAnchors(["a", 1]),
+    (err) =>
+      err instanceof TypeError &&
+      err.message !== "toAnchors expects an array of strings",
+  );
+});

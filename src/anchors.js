@@ -9,9 +9,13 @@ const { slugify } = require("./slugify.js");
  * contains duplicates. Pure: no state is kept between calls.
  *
  * @param {string[]} headings
+ * @throws {TypeError} when headings is not an array
  * @returns {string[]} same length and order as the input
  */
 function toAnchors(headings) {
+  if (!Array.isArray(headings)) {
+    throw new TypeError("toAnchors expects an array of strings");
+  }
   const used = new Set();
   return headings.map((heading) => {
     const base = slugify(heading);
