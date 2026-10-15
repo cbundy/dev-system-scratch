@@ -1,17 +1,26 @@
 "use strict";
 
-const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const SLUG_PATTERNS = {
+  "-": /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+  _: /^[a-z0-9]+(?:_[a-z0-9]+)*$/,
+};
 
 /**
  * Whether a value is a well-formed slug: non-empty runs of [a-z0-9] joined by
- * single hyphens, with no leading or trailing hyphen. Never throws; any
- * non-string yields false.
+ * single separators ("-" by default, or "_"), with no leading or trailing
+ * separator. Never throws for the text argument; any non-string yields false.
  *
  * @param {unknown} text
+ * @param {{ separator?: "-" | "_" }} [options]
  * @returns {boolean}
+ * @throws {TypeError} If separator is defined and not "-" or "_".
  */
-function isSlug(text) {
-  return typeof text === "string" && SLUG_PATTERN.test(text);
+function isSlug(text, options = {}) {
+  const { separator = "-" } = options;
+  if (separator !== "-" && separator !== "_") {
+    throw new TypeError('separator must be "-" or "_"');
+  }
+  return typeof text === "string" && SLUG_PATTERNS[separator].test(text);
 }
 
 /**

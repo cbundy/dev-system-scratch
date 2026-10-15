@@ -13,6 +13,7 @@ const { slugify } = require("./src/slugify.js");
 - `text` (`string`) - the text to convert.
 - `options` (`object`, optional)
   - `maxLength` (`number`) - maximum length of the slug; see below.
+  - `separator` (`"-"` or `"_"`, default `"-"`) - the character joining words.
 
 ### Return value
 
@@ -41,6 +42,16 @@ slugify("one two three", { maxLength: 9 }); // "one-two"
 slugify("abcdefghij", { maxLength: 4 }); // "abcd"
 ```
 
+### `separator`
+
+Words are joined by `-` by default. Pass `separator: "_"` to join with `_`
+instead; `maxLength` and `cut` behave the same way.
+
+```js
+slugify("Hello World", { separator: "_" }); // "hello_world"
+slugify("one two three", { maxLength: 9, separator: "_" }); // "one_two"
+```
+
 ### Errors
 
 A non-string `text` throws a `TypeError` with the message
@@ -48,4 +59,11 @@ A non-string `text` throws a `TypeError` with the message
 
 ```js
 slugify(42); // throws TypeError: slugify expects a string
+```
+
+Any `separator` other than `"-"` or `"_"` throws a `TypeError` with the message
+`'separator must be "-" or "_"'`, even for empty text.
+
+```js
+slugify("a b", { separator: "." }); // throws TypeError: separator must be "-" or "_"
 ```
