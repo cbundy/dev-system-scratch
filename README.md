@@ -34,3 +34,5 @@ Neither needs `npm ci`. The same two commands are:
 
 `.claude/factory-loop.json` holds this repo's loop settings: the gate commands and at most two
 issues in flight. The loop's mode and planner are set on the device that runs it, not here.
+
+<!-- drill outside merge B at 2026-10-15T23:00:39Z -->
