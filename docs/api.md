@@ -49,3 +49,25 @@ A non-string `text` throws a `TypeError` with the message
 ```js
 slugify(42); // throws TypeError: slugify expects a string
 ```
+
+## `isSlug(text)`
+
+Exported from `src/is-slug.js`:
+
+```js
+const { isSlug } = require("./src/is-slug.js");
+```
+
+Returns `true` when `text` is a well-formed slug: non-empty runs of `a-z` and
+`0-9` joined by single hyphens, with no leading or trailing hyphen. The empty
+string is not a slug.
+
+```js
+isSlug("hello-world"); // true
+isSlug("Hello"); // false
+isSlug("a--b"); // false
+isSlug(""); // false
+isSlug(42); // false
+```
+
+`isSlug` never throws: any non-string returns `false`.
