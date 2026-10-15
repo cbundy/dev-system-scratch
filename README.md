@@ -36,3 +36,5 @@ Neither needs `npm ci`. The same two commands are:
 issues in flight. The loop's mode and planner are set on the device that runs it, not here.
 
 <!-- drill outside merge B at 2026-10-15T23:00:39Z -->
+
+<!-- drill outside merge C at 2026-10-15T23:09:58Z -->
