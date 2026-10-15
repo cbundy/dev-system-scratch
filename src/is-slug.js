@@ -15,6 +15,21 @@ function isSlug(text) {
 }
 
 /**
+ * Return a value unchanged when it is a well-formed slug (see isSlug);
+ * otherwise throw.
+ *
+ * @param {unknown} text
+ * @returns {string}
+ * @throws {TypeError} when text is not a slug
+ */
+function assertSlug(text) {
+  if (!isSlug(text)) {
+    throw new TypeError("not a slug");
+  }
+  return text;
+}
+
+/**
  * The text itself when it is a well-formed slug, otherwise null. Never throws;
  * any non-string yields null.
  *
@@ -25,4 +40,4 @@ function slugOrNull(text) {
   return isSlug(text) ? text : null;
 }
 
-module.exports = { isSlug, slugOrNull };
+module.exports = { isSlug, assertSlug, slugOrNull };
