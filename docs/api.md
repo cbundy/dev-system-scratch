@@ -49,3 +49,29 @@ A non-string `text` throws a `TypeError` with the message
 ```js
 slugify(42); // throws TypeError: slugify expects a string
 ```
+
+## `slugWords(text)`
+
+Counts the words in the slug of a string. Exported from `src/slug-words.js`:
+
+```js
+const { slugWords } = require("./src/slug-words.js");
+```
+
+Returns the number of hyphen-separated words in `slugify(text)`, or `0` when
+the slug is empty.
+
+```js
+slugWords("Hello World"); // 2
+slugWords("!!!"); // 0
+slugWords("Crème brûlée & co"); // 4 ("&" becomes the word "and")
+```
+
+### Errors
+
+A non-string `text` throws a `TypeError` (via `slugify`) with the message
+`"slugify expects a string"`.
+
+```js
+slugWords(42); // throws TypeError: slugify expects a string
+```
