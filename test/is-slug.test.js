@@ -2,7 +2,7 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { isSlug } = require("../src/is-slug.js");
+const { isSlug, slugOrNull } = require("../src/is-slug.js");
 
 test("well-formed slugs are accepted", () => {
   for (const s of ["hello-world", "a1-b2", "x"]) {
@@ -19,4 +19,14 @@ test("malformed strings are rejected", () => {
 test("non-strings are rejected without throwing", () => {
   assert.equal(isSlug(null), false);
   assert.equal(isSlug(42), false);
+});
+
+test("slugOrNull passes a slug through unchanged", () => {
+  assert.equal(slugOrNull("a-b"), "a-b");
+});
+
+test("slugOrNull returns null for non-slugs without throwing", () => {
+  assert.equal(slugOrNull("A"), null);
+  assert.equal(slugOrNull(""), null);
+  assert.equal(slugOrNull(1), null);
 });
