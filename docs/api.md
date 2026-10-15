@@ -49,3 +49,11 @@ A non-string `text` throws a `TypeError` with the message
 ```js
 slugify(42); // throws TypeError: slugify expects a string
 ```
+
+A defined `maxLength` that is not a positive integer throws a `RangeError`
+with the message `"maxLength must be a positive integer, got <value>"`, where
+`<value>` is `String(maxLength)`.
+
+```js
+slugify("x", { maxLength: 0 }); // throws RangeError: maxLength must be a positive integer, got 0
+```
