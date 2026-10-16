@@ -68,7 +68,7 @@ Any `separator` other than `"-"` or `"_"` throws a `TypeError` with the message
 slugify("a b", { separator: "." }); // throws TypeError: separator must be "-" or "_"
 ```
 
-## `isSlug(text)`
+## `isSlug(text, options)`
 
 Exported from `src/is-slug.js`:
 
@@ -77,8 +77,9 @@ const { isSlug } = require("./src/is-slug.js");
 ```
 
 Returns `true` when `text` is a well-formed slug: non-empty runs of `a-z` and
-`0-9` joined by single hyphens, with no leading or trailing hyphen. The empty
-string is not a slug.
+`0-9` joined by single separators, with no leading or trailing separator. The
+empty string is not a slug. `options` is optional; `separator` is `"-"` (the
+default) or `"_"`.
 
 ```js
 isSlug("hello-world"); // true
@@ -86,9 +87,13 @@ isSlug("Hello"); // false
 isSlug("a--b"); // false
 isSlug(""); // false
 isSlug(42); // false
+isSlug("a_b", { separator: "_" }); // true
+isSlug("a-b", { separator: "_" }); // false
 ```
 
-`isSlug` never throws: any non-string returns `false`.
+`isSlug` never throws for the `text` argument: any non-string returns `false`.
+A `separator` other than `"-"` or `"_"` throws a `TypeError` with the message
+`'separator must be "-" or "_"'`.
 
 ## `sameSlug(a, b, options)`
 
