@@ -22,4 +22,60 @@ function slugifyFilename(name) {
   return stem + "." + ext;
 }
 
-module.exports = { slugifyFilename };
+/**
+ * Slugify a list of filenames, preserving order.
+ * Each element goes to slugifyFilename unchanged, so a non-string element
+ * throws slugify's TypeError.
+ *
+ * @param {string[]} names
+ * @returns {string[]}
+ * @throws {TypeError} if names is not an array
+ */
+function slugifyFilenames(names) {
+  if (!Array.isArray(names)) {
+    throw new TypeError("slugifyFilenames expects an array");
+  }
+  return names.map((name) => slugifyFilename(name));
+}
+
+/**
+ * The slugified stem of a filename: what slugifyFilename keeps before its last
+ * extension, or the whole slug when slugifyFilename keeps no extension.
+ * "archive.tar.gz" -> "archive-tar"; "README" -> "readme".
+ *
+ * @param {string} name
+ * @returns {string}
+ * @throws {TypeError} if name is not a string
+ */
+function filenameStem(name) {
+  const slug = slugify(name);
+  const dot = name.lastIndexOf(".");
+  if (dot <= 0) return slug;
+  const stem = slugify(name.slice(0, dot));
+  const ext = name.slice(dot + 1).toLowerCase();
+  if (!stem || !/^[a-z0-9]+$/.test(ext)) return slug;
+  return stem;
+}
+
+/**
+ * The lowercased last extension that slugifyFilename keeps, or "" when it
+ * keeps none (no dot, leading dot only, empty stem, or an extension that is
+ * not plain [a-z0-9]). Non-empty exactly when slugifyFilename(name) ends in
+ * "." + the result.
+ * "My Holiday Photo.JPG" -> "jpg"; "README" -> "".
+ *
+ * @param {string} name
+ * @returns {string}
+ * @throws {TypeError} if name is not a string
+ */
+function filenameExtension(name) {
+  slugify(name);
+  const dot = name.lastIndexOf(".");
+  if (dot <= 0) return "";
+  const stem = slugify(name.slice(0, dot));
+  const ext = name.slice(dot + 1).toLowerCase();
+  if (!stem || !/^[a-z0-9]+$/.test(ext)) return "";
+  return ext;
+}
+
+module.exports = { slugifyFilename, slugifyFilenames, filenameStem, filenameExtension };

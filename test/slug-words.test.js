@@ -20,3 +20,12 @@ test("empty slug is zero words", () => {
 test("non-string throws TypeError", () => {
   assert.throws(() => slugWords(42), TypeError);
 });
+
+for (const [label, value] of [["42", 42], ["null", null], ["undefined", undefined]]) {
+  test(`slugWords(${label}) throws slugWords TypeError`, () => {
+    assert.throws(() => slugWords(value), {
+      name: "TypeError",
+      message: "slugWords expects a string",
+    });
+  });
+}
