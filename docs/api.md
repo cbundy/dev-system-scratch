@@ -49,3 +49,36 @@ A non-string `text` throws a `TypeError` with the message
 ```js
 slugify(42); // throws TypeError: slugify expects a string
 ```
+
+## `sameSlug(a, b)`
+
+Checks whether two strings produce the same slug. Exported from
+`src/same-slug.js`:
+
+```js
+const { sameSlug } = require("./src/same-slug.js");
+```
+
+### Parameters
+
+- `a` (`string`) - the first text.
+- `b` (`string`) - the second text.
+
+### Return value
+
+`true` when `a` and `b` produce the same slug under `slugify` (no options),
+otherwise `false`.
+
+```js
+sameSlug("Hello World", "hello-world"); // true
+sameSlug("Hello World", "goodbye-world"); // false
+```
+
+### Errors
+
+When either argument is not a string, `sameSlug` throws the `TypeError` from
+`slugify`, with the message `"slugify expects a string"`.
+
+```js
+sameSlug(42, "a"); // throws TypeError: slugify expects a string
+```
