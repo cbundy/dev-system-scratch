@@ -121,6 +121,30 @@ sameSlug("Hello wonderful world", "Hello wonderful people", { maxLength: 15 }); 
 Errors are those of `slugify`: a non-string argument throws a `TypeError`, and an
 invalid `maxLength` throws a `RangeError`.
 
+## `deslugify(slug)`
+
+Turns a slug back into readable text. Exported from `src/deslugify.js`:
+
+```js
+const { deslugify } = require("./src/deslugify.js");
+```
+
+Every `-` becomes a space and the first character is uppercased. The rest
+keeps its case.
+
+```js
+deslugify("hello-world"); // "Hello world"
+```
+
+### Errors
+
+A non-string `slug` throws a `TypeError` with the message
+`"deslugify expects a string"`.
+
+```js
+deslugify(42); // throws TypeError: deslugify expects a string
+```
+
 ## Performance
 
 Measured with `node scripts/bench.js` (a fixed 50-string corpus, run for 150 s)
