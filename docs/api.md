@@ -1,5 +1,7 @@
 # API reference
 
+Requires Node.js 20 or later (see `engines` in `package.json`).
+
 ## `slugify(text, options = {})`
 
 Turns arbitrary text into a URL slug. Exported from `src/slugify.js`:
@@ -68,6 +70,14 @@ Any `separator` other than `"-"` or `"_"` throws a `TypeError` with the message
 slugify("a b", { separator: "." }); // throws TypeError: separator must be "-" or "_"
 ```
 
+A defined `maxLength` that is not a positive integer throws a `RangeError`
+with the message `"maxLength must be a positive integer, got <value>"`, where
+`<value>` is `String(maxLength)`.
+
+```js
+slugify("x", { maxLength: 0 }); // throws RangeError: maxLength must be a positive integer, got 0
+```
+
 ## `slugWords(text)`
 
 Counts the words in the slug of a string. Exported from `src/slug-words.js`:
@@ -121,18 +131,94 @@ isSlug("a-b", { separator: "_" }); // false
 A `separator` other than `"-"` or `"_"` throws a `TypeError` with the message
 `'separator must be "-" or "_"'`.
 
-## `sameSlug(a, b, options)`
+## `deslugify(slug)`
 
-Returns `true` when `a` and `b` produce the same slug. `options` is optional and
-is passed unchanged to both `slugify` calls.
+Turns a slug back into readable text. Exported from `src/deslugify.js`:
 
 ```js
+const { deslugify } = require("./src/deslugify.js");
+```
+
+Every `-` becomes a space and the first character is uppercased. The rest
+keeps its case.
+
+```js
+deslugify("hello-world"); // "Hello world"
+```
+
+### Errors
+
+A non-string `slug` throws a `TypeError` with the message
+`"deslugify expects a string"`.
+
+```js
+deslugify(42); // throws TypeError: deslugify expects a string
+```
+
+## `sameSlug(a, b, options)`
+
+Returns `true` when `a` and `b` produce the same slug under `slugify`, otherwise
+`false`. Exported from `src/same-slug.js`:
+
+```js
+const { sameSlug } = require("./src/same-slug.js");
+```
+
+`options` is optional and is passed unchanged to both `slugify` calls.
+
+```js
+sameSlug("Hello World", "hello-world"); // true
 sameSlug("Hello wonderful world", "Hello wonderful people"); // false
 sameSlug("Hello wonderful world", "Hello wonderful people", { maxLength: 15 }); // true
 ```
 
-Errors are those of `slugify`: a non-string argument throws a `TypeError`, and an
-invalid `maxLength` throws a `RangeError`.
+### Errors
+
+Errors are those of `slugify`. When either argument is not a string it throws a
+`TypeError` with the message `"slugify expects a string"`, and an invalid
+`maxLength` throws a `RangeError`.
+
+```js
+sameSlug(42, "a"); // throws TypeError: slugify expects a string
+```
+
+## `toAnchors(headings)`
+
+Exported from `src/anchors.js`.
+
+```js
+const { toAnchors } = require("./src/anchors.js");
+```
+
+Takes an array of heading strings, slugifies each one with `slugify`, and
+returns an array of the same length and order. The first occurrence of a slug
+stays bare; later repeats get `-1`, `-2`, ... A suffixed candidate that is
+already taken is skipped, so the result never contains duplicates. The
+function is pure: no state is kept between calls.
+
+```js
+toAnchors(["Intro", "Intro", "Setup"]); // ["intro", "intro-1", "setup"]
+```
+
+## `slugifyFilename(name)`
+
+Slugifies a filename while keeping its last extension in lower case. Exported
+from `src/filename.js`:
+
+```js
+const { slugifyFilename } = require("./src/filename.js");
+```
+
+Earlier dots become `-`. A leading dot does not count as an extension. When the
+stem is empty or the extension is not plain `[a-z0-9]`, the whole name is
+slugified instead.
+
+```js
+slugifyFilename("My Holiday Photo.JPG"); // "my-holiday-photo.jpg"
+slugifyFilename(".env"); // "env"
+```
+
+A non-string `name` throws the same `TypeError` as `slugify`.
 
 ## Performance
 
