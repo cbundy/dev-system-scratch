@@ -57,4 +57,25 @@ function filenameStem(name) {
   return stem;
 }
 
-module.exports = { slugifyFilename, slugifyFilenames, filenameStem };
+/**
+ * The lowercased last extension that slugifyFilename keeps, or "" when it
+ * keeps none (no dot, leading dot only, empty stem, or an extension that is
+ * not plain [a-z0-9]). Non-empty exactly when slugifyFilename(name) ends in
+ * "." + the result.
+ * "My Holiday Photo.JPG" -> "jpg"; "README" -> "".
+ *
+ * @param {string} name
+ * @returns {string}
+ * @throws {TypeError} if name is not a string
+ */
+function filenameExtension(name) {
+  slugify(name);
+  const dot = name.lastIndexOf(".");
+  if (dot <= 0) return "";
+  const stem = slugify(name.slice(0, dot));
+  const ext = name.slice(dot + 1).toLowerCase();
+  if (!stem || !/^[a-z0-9]+$/.test(ext)) return "";
+  return ext;
+}
+
+module.exports = { slugifyFilename, slugifyFilenames, filenameStem, filenameExtension };
