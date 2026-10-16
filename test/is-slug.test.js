@@ -35,6 +35,25 @@ test("assertSlug throws TypeError for non-slugs", () => {
   }
 });
 
+test("separator option selects the joining character", () => {
+  assert.equal(isSlug("a_b"), false);
+  assert.equal(isSlug("a_b", {}), false);
+  assert.equal(isSlug("a_b", { separator: "_" }), true);
+  assert.equal(isSlug("a-b", { separator: "-" }), true);
+  assert.equal(isSlug("a-b", { separator: "_" }), false);
+  for (const s of ["_a", "a_", "a__b", ""]) {
+    assert.equal(isSlug(s, { separator: "_" }), false, s);
+  }
+  assert.equal(isSlug(42, { separator: "_" }), false);
+});
+
+test("isSlug rejects an unsupported separator", () => {
+  assert.throws(() => isSlug("a", { separator: "." }), {
+    name: "TypeError",
+    message: 'separator must be "-" or "_"',
+  });
+});
+
 test("slugOrNull passes a slug through unchanged", () => {
   assert.equal(slugOrNull("a-b"), "a-b");
 });

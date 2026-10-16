@@ -76,6 +76,15 @@ forAll("maxLength never lets the slug grow past it, for both cuts", (input, next
   }
 });
 
+forAll("separator _ is the - result with hyphens replaced", (input, next) => {
+  const maxLength = 1 + Math.floor(next() * 20);
+  for (const opts of [{}, { maxLength, cut: "word" }, { maxLength, cut: "hard" }]) {
+    const slug = slugify(input, { ...opts, separator: "_" });
+    assert.equal(slug, slugify(input, opts).replace(/-/g, "_"));
+    assert.ok(slug === "" || isSlug(slug, { separator: "_" }), `not a slug: ${JSON.stringify(slug)}`);
+  }
+});
+
 forAll("sameSlug is reflexive and symmetric", (input, next) => {
   const other = text(next);
   assert.ok(sameSlug(input, input));
