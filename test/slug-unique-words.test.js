@@ -18,6 +18,10 @@ test("text with no repeats returns its slug", () => {
   assert.equal(slugUniqueWords("Hello Big World"), "hello-big-world");
 });
 
+test("a single word returns its slug", () => {
+  assert.equal(slugUniqueWords("Hello"), "hello");
+});
+
 test("repeats differing in case or accents collapse", () => {
   assert.equal(slugUniqueWords("Café cafe CAFE"), "cafe");
 });
