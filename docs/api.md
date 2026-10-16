@@ -50,6 +50,14 @@ A non-string `text` throws a `TypeError` with the message
 slugify(42); // throws TypeError: slugify expects a string
 ```
 
+A defined `maxLength` that is not a positive integer throws a `RangeError`
+with the message `"maxLength must be a positive integer, got <value>"`, where
+`<value>` is `String(maxLength)`.
+
+```js
+slugify("x", { maxLength: 0 }); // throws RangeError: maxLength must be a positive integer, got 0
+```
+
 ## `slugWords(text)`
 
 Counts the words in the slug of a string. Exported from `src/slug-words.js`:
