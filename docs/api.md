@@ -108,19 +108,6 @@ isSlug(42); // false
 
 `isSlug` never throws: any non-string returns `false`.
 
-## `sameSlug(a, b, options)`
-
-Returns `true` when `a` and `b` produce the same slug. `options` is optional and
-is passed unchanged to both `slugify` calls.
-
-```js
-sameSlug("Hello wonderful world", "Hello wonderful people"); // false
-sameSlug("Hello wonderful world", "Hello wonderful people", { maxLength: 15 }); // true
-```
-
-Errors are those of `slugify`: a non-string argument throws a `TypeError`, and an
-invalid `maxLength` throws a `RangeError`.
-
 ## `deslugify(slug)`
 
 Turns a slug back into readable text. Exported from `src/deslugify.js`:
@@ -143,6 +130,33 @@ A non-string `slug` throws a `TypeError` with the message
 
 ```js
 deslugify(42); // throws TypeError: deslugify expects a string
+```
+
+## `sameSlug(a, b, options)`
+
+Returns `true` when `a` and `b` produce the same slug under `slugify`, otherwise
+`false`. Exported from `src/same-slug.js`:
+
+```js
+const { sameSlug } = require("./src/same-slug.js");
+```
+
+`options` is optional and is passed unchanged to both `slugify` calls.
+
+```js
+sameSlug("Hello World", "hello-world"); // true
+sameSlug("Hello wonderful world", "Hello wonderful people"); // false
+sameSlug("Hello wonderful world", "Hello wonderful people", { maxLength: 15 }); // true
+```
+
+### Errors
+
+Errors are those of `slugify`. When either argument is not a string it throws a
+`TypeError` with the message `"slugify expects a string"`, and an invalid
+`maxLength` throws a `RangeError`.
+
+```js
+sameSlug(42, "a"); // throws TypeError: slugify expects a string
 ```
 
 ## Performance
