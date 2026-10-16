@@ -29,4 +29,15 @@ function assertSlug(text) {
   return text;
 }
 
-module.exports = { isSlug, assertSlug };
+/**
+ * The text itself when it is a well-formed slug, otherwise null. Never throws;
+ * any non-string yields null.
+ *
+ * @param {unknown} text
+ * @returns {string | null}
+ */
+function slugOrNull(text) {
+  return isSlug(text) ? text : null;
+}
+
+module.exports = { isSlug, assertSlug, slugOrNull };
