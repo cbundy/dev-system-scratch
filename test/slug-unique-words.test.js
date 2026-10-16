@@ -30,6 +30,10 @@ test("repeats separated by punctuation collapse to one word", () => {
   assert.equal(slugUniqueWords("red, red; RED! blue"), "red-blue");
 });
 
+test("repeated numeric words collapse like any other word", () => {
+  assert.equal(slugUniqueWords("route 66 and route 66 again"), "route-66-and-again");
+});
+
 test("empty slug returns empty string", () => {
   assert.equal(slugUniqueWords(""), "");
   assert.equal(slugUniqueWords("!!!"), "");
