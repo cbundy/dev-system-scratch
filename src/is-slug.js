@@ -8,7 +8,8 @@ const SLUG_PATTERNS = {
 /**
  * Whether a value is a well-formed slug: non-empty runs of [a-z0-9] joined by
  * single separators ("-" by default, or "_"), with no leading or trailing
- * separator. Never throws for the text argument; any non-string yields false.
+ * separator. The empty string is not a slug (isSlug("") is false). Never
+ * throws for the text argument; any non-string yields false.
  *
  * @param {unknown} text
  * @param {{ separator?: "-" | "_" }} [options]
@@ -38,4 +39,15 @@ function assertSlug(text) {
   return text;
 }
 
-module.exports = { isSlug, assertSlug };
+/**
+ * The text itself when it is a well-formed slug, otherwise null. Never throws;
+ * any non-string yields null.
+ *
+ * @param {unknown} text
+ * @returns {string | null}
+ */
+function slugOrNull(text) {
+  return isSlug(text) ? text : null;
+}
+
+module.exports = { isSlug, assertSlug, slugOrNull };

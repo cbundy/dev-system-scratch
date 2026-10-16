@@ -10,8 +10,10 @@ const { slugify } = require("./slugify.js");
  *
  * @param {string[]} headings
  * @returns {string[]} same length and order as the input
+ * @throws {TypeError} when headings is not an array
  */
 function toAnchors(headings) {
+  if (!Array.isArray(headings)) throw new TypeError("toAnchors expects an array of strings");
   const used = new Set();
   return headings.map((heading) => {
     const base = slugify(heading);

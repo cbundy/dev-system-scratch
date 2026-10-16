@@ -1,7 +1,8 @@
 "use strict";
 
 /**
- * Turn a hyphenated slug into a sentence-like string: "-" becomes a space and
+ * Turn a hyphenated slug into a sentence-like string: a run of one or more
+ * hyphens becomes a single space, hyphens at the start or end are dropped, and
  * the first character is uppercased; the rest keeps its case.
  *
  * @param {string} slug
@@ -12,7 +13,10 @@ function deslugify(slug) {
   if (typeof slug !== "string") {
     throw new TypeError("deslugify expects a string");
   }
-  const text = slug.split("-").join(" ");
+  const text = slug
+    .split("-")
+    .filter((part) => part !== "")
+    .join(" ");
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
