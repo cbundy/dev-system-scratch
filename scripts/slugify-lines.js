@@ -16,7 +16,7 @@ function main() {
   }
   let text;
   try {
-    text = fs.readFileSync(file, "utf8");
+    text = fs.readFileSync(file === "-" ? 0 : file, "utf8");
   } catch (err) {
     if (err.code === "ENOENT" || err.code === "ENOTDIR") {
       process.stderr.write(USAGE);
