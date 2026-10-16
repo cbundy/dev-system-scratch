@@ -163,6 +163,26 @@ function is pure: no state is kept between calls.
 toAnchors(["Intro", "Intro", "Setup"]); // ["intro", "intro-1", "setup"]
 ```
 
+## `slugifyFilename(name)`
+
+Slugifies a filename while keeping its last extension in lower case. Exported
+from `src/filename.js`:
+
+```js
+const { slugifyFilename } = require("./src/filename.js");
+```
+
+Earlier dots become `-`. A leading dot does not count as an extension. When the
+stem is empty or the extension is not plain `[a-z0-9]`, the whole name is
+slugified instead.
+
+```js
+slugifyFilename("My Holiday Photo.JPG"); // "my-holiday-photo.jpg"
+slugifyFilename(".env"); // "env"
+```
+
+A non-string `name` throws the same `TypeError` as `slugify`.
+
 ## Performance
 
 Measured with `node scripts/bench.js` (a fixed 50-string corpus, run for 150 s)
