@@ -38,4 +38,23 @@ function slugifyFilenames(names) {
   return names.map((name) => slugifyFilename(name));
 }
 
-module.exports = { slugifyFilename, slugifyFilenames };
+/**
+ * The slugified stem of a filename: what slugifyFilename keeps before its last
+ * extension, or the whole slug when slugifyFilename keeps no extension.
+ * "archive.tar.gz" -> "archive-tar"; "README" -> "readme".
+ *
+ * @param {string} name
+ * @returns {string}
+ * @throws {TypeError} if name is not a string
+ */
+function filenameStem(name) {
+  const slug = slugify(name);
+  const dot = name.lastIndexOf(".");
+  if (dot <= 0) return slug;
+  const stem = slugify(name.slice(0, dot));
+  const ext = name.slice(dot + 1).toLowerCase();
+  if (!stem || !/^[a-z0-9]+$/.test(ext)) return slug;
+  return stem;
+}
+
+module.exports = { slugifyFilename, slugifyFilenames, filenameStem };
