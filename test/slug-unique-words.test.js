@@ -26,6 +26,10 @@ test("repeats differing in case or accents collapse", () => {
   assert.equal(slugUniqueWords("Café cafe CAFE"), "cafe");
 });
 
+test("repeats separated by punctuation collapse to one word", () => {
+  assert.equal(slugUniqueWords("red, red; RED! blue"), "red-blue");
+});
+
 test("empty slug returns empty string", () => {
   assert.equal(slugUniqueWords(""), "");
   assert.equal(slugUniqueWords("!!!"), "");
