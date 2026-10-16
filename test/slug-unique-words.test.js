@@ -34,6 +34,10 @@ test("repeated numeric words collapse like any other word", () => {
   assert.equal(slugUniqueWords("route 66 and route 66 again"), "route-66-and-again");
 });
 
+test("hyphenated input compares words one by one", () => {
+  assert.equal(slugUniqueWords("well-known and well known"), "well-known-and");
+});
+
 test("empty slug returns empty string", () => {
   assert.equal(slugUniqueWords(""), "");
   assert.equal(slugUniqueWords("!!!"), "");
