@@ -24,6 +24,28 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      # Drill (run 4 part B, drill 5): a flaky check. The PR of issue-71 fails once, then passes: the first run
+      # of that PR saves a marker in the Actions cache and fails; every later run, the re-run included, finds
+      # the marker and passes. No other PR is touched.
+      - name: drill flaky marker
+        id: flaky
+        if: github.event_name == 'pull_request' && github.head_ref == 'issue-71'
+        uses: actions/cache/restore@v4
+        with:
+          path: .flaky-drill
+          key: flaky-drill-issue-71
+      - name: drill flaky first run
+        if: github.event_name == 'pull_request' && github.head_ref == 'issue-71' && steps.flaky.outputs.cache-hit != 'true'
+        run: mkdir -p .flaky-drill && date -u > .flaky-drill/first
+      - name: drill flaky save
+        if: github.event_name == 'pull_request' && github.head_ref == 'issue-71' && steps.flaky.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: .flaky-drill
+          key: flaky-drill-issue-71
+      - name: drill flaky failure
+        if: github.event_name == 'pull_request' && github.head_ref == 'issue-71' && steps.flaky.outputs.cache-hit != 'true'
+        run: echo "drill: a flaky failure on the first run of this PR" && exit 1
       # Drill setting: hold the job about as long as dev-system's CI (median 2.8 min), so a queue head
       # has a real CI wait.
       - run: sleep 120
