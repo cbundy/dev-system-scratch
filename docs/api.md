@@ -49,3 +49,21 @@ A non-string `text` throws a `TypeError` with the message
 ```js
 slugify(42); // throws TypeError: slugify expects a string
 ```
+
+## `toAnchors(headings)`
+
+Exported from `src/anchors.js`.
+
+```js
+const { toAnchors } = require("./src/anchors.js");
+```
+
+Takes an array of heading strings, slugifies each one with `slugify`, and
+returns an array of the same length and order. The first occurrence of a slug
+stays bare; later repeats get `-1`, `-2`, ... A suffixed candidate that is
+already taken is skipped, so the result never contains duplicates. The
+function is pure: no state is kept between calls.
+
+```js
+toAnchors(["Intro", "Intro", "Setup"]); // ["intro", "intro-1", "setup"]
+```
