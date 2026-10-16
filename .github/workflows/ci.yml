@@ -45,7 +45,7 @@ jobs:
           key: flaky-drill-issue-71
       - name: drill flaky failure
         if: github.event_name == 'pull_request' && github.head_ref == 'issue-71' && steps.flaky.outputs.cache-hit != 'true'
-        run: echo "drill: a flaky failure on the first run of this PR" && exit 1
+        run: echo "drill - a flaky failure on the first run of this PR" && exit 1
       # Drill setting: hold the job about as long as dev-system's CI (median 2.8 min), so a queue head
       # has a real CI wait.
       - run: sleep 120
