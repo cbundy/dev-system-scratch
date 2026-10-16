@@ -1,5 +1,7 @@
 # API reference
 
+Requires Node.js 20 or later (see `engines` in `package.json`).
+
 ## `slugify(text, options = {})`
 
 Turns arbitrary text into a URL slug. Exported from `src/slugify.js`:
