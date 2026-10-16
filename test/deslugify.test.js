@@ -25,3 +25,15 @@ test("throws TypeError for non-strings", () => {
     assert.throws(() => deslugify(v), TypeError);
   }
 });
+
+test("a run of hyphens becomes one space", () => {
+  assert.equal(deslugify("hello--world"), "Hello world");
+});
+
+test("drops leading and trailing hyphens", () => {
+  assert.equal(deslugify("-hello-"), "Hello");
+});
+
+test("only hyphens returns empty string", () => {
+  assert.equal(deslugify("---"), "");
+});
