@@ -49,3 +49,27 @@ A non-string `text` throws a `TypeError` with the message
 ```js
 slugify(42); // throws TypeError: slugify expects a string
 ```
+
+## `deslugify(slug)`
+
+Turns a slug back into readable text. Exported from `src/deslugify.js`:
+
+```js
+const { deslugify } = require("./src/deslugify.js");
+```
+
+Every `-` becomes a space and the first character is uppercased. The rest
+keeps its case.
+
+```js
+deslugify("hello-world"); // "Hello world"
+```
+
+### Errors
+
+A non-string `slug` throws a `TypeError` with the message
+`"deslugify expects a string"`.
+
+```js
+deslugify(42); // throws TypeError: deslugify expects a string
+```
