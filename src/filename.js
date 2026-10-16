@@ -22,4 +22,20 @@ function slugifyFilename(name) {
   return stem + "." + ext;
 }
 
-module.exports = { slugifyFilename };
+/**
+ * Slugify a list of filenames, preserving order.
+ * Each element goes to slugifyFilename unchanged, so a non-string element
+ * throws slugify's TypeError.
+ *
+ * @param {string[]} names
+ * @returns {string[]}
+ * @throws {TypeError} if names is not an array
+ */
+function slugifyFilenames(names) {
+  if (!Array.isArray(names)) {
+    throw new TypeError("slugifyFilenames expects an array");
+  }
+  return names.map((name) => slugifyFilename(name));
+}
+
+module.exports = { slugifyFilename, slugifyFilenames };
