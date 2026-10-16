@@ -2,7 +2,8 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { slugifyFilename } = require("../src/filename.js");
+const { slugifyFilename, filenameStem, filenameExtension } = require("../src/filename.js");
+const { slugify } = require("../src/slugify.js");
 
 test("slugifies the stem and lowercases the extension", () => {
   assert.equal(slugifyFilename("My Holiday Photo.JPG"), "my-holiday-photo.jpg");
@@ -46,4 +47,57 @@ test("an extension with a trailing space falls back to the plain slug", () => {
 
 test("rejects non-string input", () => {
   assert.throws(() => slugifyFilename(42), TypeError);
+});
+
+test("filenameStem returns the stem before the kept extension", () => {
+  assert.equal(filenameStem("My Holiday Photo.JPG"), "my-holiday-photo");
+  assert.equal(filenameStem("archive.tar.gz"), "archive-tar");
+});
+
+test("filenameStem returns the whole slug when no extension is kept", () => {
+  assert.equal(filenameStem("README"), "readme");
+  assert.equal(filenameStem(".env"), "env");
+  assert.equal(filenameStem("Résumé.PDF "), "resume-pdf");
+});
+
+test("filenameStem rejects non-string input", () => {
+  assert.throws(() => filenameStem(42), TypeError);
+});
+
+test("filenameStem agrees with slugifyFilename", () => {
+  const names = ["My Holiday Photo.JPG", "archive.tar.gz", "README", ".env", "Résumé.PDF ", "a.", "..x"];
+  for (const n of names) {
+    const full = slugifyFilename(n);
+    const stem = filenameStem(n);
+    const dot = full.lastIndexOf(".");
+    if (dot === -1) assert.equal(full, stem);
+    else assert.equal(full, stem + "." + full.slice(dot + 1));
+  }
+});
+
+test("filenameExtension returns the lowercased last extension", () => {
+  assert.equal(filenameExtension("My Holiday Photo.JPG"), "jpg");
+  assert.equal(filenameExtension("archive.tar.GZ"), "gz");
+});
+
+test("filenameExtension returns empty when no extension is kept", () => {
+  for (const name of ["README", ".bashrc", "!!!.txt", "a.b/c", "Résumé.PDF ", "file."]) {
+    assert.equal(filenameExtension(name), "", name);
+  }
+});
+
+test("filenameExtension agrees with slugifyFilename", () => {
+  const names = [
+    "My Holiday Photo.JPG", "archive.tar.GZ", "README", ".bashrc",
+    "!!!.txt", "a.b/c", "Résumé.PDF ", "file.",
+  ];
+  for (const name of names) {
+    const ext = filenameExtension(name);
+    if (ext) assert.ok(slugifyFilename(name).endsWith("." + ext), name);
+    else assert.equal(slugifyFilename(name), slugify(name), name);
+  }
+});
+
+test("filenameExtension rejects non-string input", () => {
+  assert.throws(() => filenameExtension(42), TypeError);
 });

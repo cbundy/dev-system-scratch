@@ -57,3 +57,73 @@ with the message `"maxLength must be a positive integer, got <value>"`, where
 ```js
 slugify("x", { maxLength: 0 }); // throws RangeError: maxLength must be a positive integer, got 0
 ```
+
+## `slugWords(text)`
+
+Counts the words in the slug of a string. Exported from `src/slug-words.js`:
+
+```js
+const { slugWords } = require("./src/slug-words.js");
+```
+
+Returns the number of hyphen-separated words in `slugify(text)`, or `0` when
+the slug is empty.
+
+```js
+slugWords("Hello World"); // 2
+slugWords("!!!"); // 0
+slugWords("Crème brûlée & co"); // 4 ("&" becomes the word "and")
+```
+
+### Errors
+
+A non-string `text` throws a `TypeError` (via `slugify`) with the message
+`"slugify expects a string"`.
+
+```js
+slugWords(42); // throws TypeError: slugify expects a string
+```
+
+## `isSlug(text)`
+
+Exported from `src/is-slug.js`:
+
+```js
+const { isSlug } = require("./src/is-slug.js");
+```
+
+Returns `true` when `text` is a well-formed slug: non-empty runs of `a-z` and
+`0-9` joined by single hyphens, with no leading or trailing hyphen. The empty
+string is not a slug.
+
+```js
+isSlug("hello-world"); // true
+isSlug("Hello"); // false
+isSlug("a--b"); // false
+isSlug(""); // false
+isSlug(42); // false
+```
+
+`isSlug` never throws: any non-string returns `false`.
+
+## `sameSlug(a, b, options)`
+
+Returns `true` when `a` and `b` produce the same slug. `options` is optional and
+is passed unchanged to both `slugify` calls.
+
+```js
+sameSlug("Hello wonderful world", "Hello wonderful people"); // false
+sameSlug("Hello wonderful world", "Hello wonderful people", { maxLength: 15 }); // true
+```
+
+Errors are those of `slugify`: a non-string argument throws a `TypeError`, and an
+invalid `maxLength` throws a `RangeError`.
+
+## Performance
+
+Measured with `node scripts/bench.js` (a fixed 50-string corpus, run for 150 s)
+on Node v24.21.0 on 2026-10-15:
+
+```
+slugify: 1361883 ops/s
+```
