@@ -18,7 +18,8 @@ test("first word wins a tie", () => {
 
 test("words come from the slug", () => {
   assert.equal(slugLongestWord("  Rock & Roll  Band "), "rock");
-  assert.equal(slugLongestWord("Crème brûlée"), "creme");
+  assert.equal(slugLongestWord("Crème brûlée"), "brulee");
+  assert.equal(slugLongestWord("Crème tarte"), "creme");
 });
 
 test("returns an empty string for an empty slug", () => {
