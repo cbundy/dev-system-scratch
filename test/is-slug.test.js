@@ -16,6 +16,10 @@ test("malformed strings are rejected", () => {
   }
 });
 
+test("the empty string is not a slug", () => {
+  assert.equal(isSlug(""), false);
+});
+
 test("non-strings are rejected without throwing", () => {
   assert.equal(isSlug(null), false);
   assert.equal(isSlug(42), false);
