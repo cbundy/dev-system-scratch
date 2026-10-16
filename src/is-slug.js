@@ -4,8 +4,8 @@ const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 /**
  * Whether a value is a well-formed slug: non-empty runs of [a-z0-9] joined by
- * single hyphens, with no leading or trailing hyphen. Never throws; any
- * non-string yields false.
+ * single hyphens, with no leading or trailing hyphen. The empty string is not
+ * a slug (isSlug("") is false). Never throws; any non-string yields false.
  *
  * @param {unknown} text
  * @returns {boolean}
@@ -29,4 +29,15 @@ function assertSlug(text) {
   return text;
 }
 
-module.exports = { isSlug, assertSlug };
+/**
+ * The text itself when it is a well-formed slug, otherwise null. Never throws;
+ * any non-string yields null.
+ *
+ * @param {unknown} text
+ * @returns {string | null}
+ */
+function slugOrNull(text) {
+  return isSlug(text) ? text : null;
+}
+
+module.exports = { isSlug, assertSlug, slugOrNull };
