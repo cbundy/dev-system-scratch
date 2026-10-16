@@ -24,3 +24,6 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+      # Drill setting: hold the job about as long as dev-system's CI (median 2.8 min), so a queue head
+      # has a real CI wait.
+      - run: sleep 120

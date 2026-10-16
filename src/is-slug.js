@@ -14,4 +14,19 @@ function isSlug(text) {
   return typeof text === "string" && SLUG_PATTERN.test(text);
 }
 
-module.exports = { isSlug };
+/**
+ * Return a value unchanged when it is a well-formed slug (see isSlug);
+ * otherwise throw.
+ *
+ * @param {unknown} text
+ * @returns {string}
+ * @throws {TypeError} when text is not a slug
+ */
+function assertSlug(text) {
+  if (!isSlug(text)) {
+    throw new TypeError("not a slug");
+  }
+  return text;
+}
+
+module.exports = { isSlug, assertSlug };

@@ -71,3 +71,16 @@ isSlug(42); // false
 ```
 
 `isSlug` never throws: any non-string returns `false`.
+
+## `sameSlug(a, b, options)`
+
+Returns `true` when `a` and `b` produce the same slug. `options` is optional and
+is passed unchanged to both `slugify` calls.
+
+```js
+sameSlug("Hello wonderful world", "Hello wonderful people"); // false
+sameSlug("Hello wonderful world", "Hello wonderful people", { maxLength: 15 }); // true
+```
+
+Errors are those of `slugify`: a non-string argument throws a `TypeError`, and an
+invalid `maxLength` throws a `RangeError`.
