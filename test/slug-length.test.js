@@ -23,3 +23,7 @@ test("non-string throws slugify's TypeError", () => {
     });
   }
 });
+
+test("counts the separators of a single-letter slug", () => {
+  assert.equal(slugLength("a b c"), 5);
+});
