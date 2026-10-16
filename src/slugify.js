@@ -15,7 +15,7 @@
  *   limits the slug length; undefined leaves the slug untrimmed. Any defined
  *   maxLength must be a positive integer, even when no trimming is needed;
  *   otherwise throws RangeError with message "maxLength must be a positive
- *   integer". cut "word" (default) trims at a word boundary; cut "hard" cuts
+ *   integer, got <value>", where <value> is String(maxLength). cut "word" (default) trims at a word boundary; cut "hard" cuts
  *   at exactly maxLength, then drops a trailing "-".
  * @returns {string}
  * @throws {TypeError} If text is not a string or cut has an unsupported value,
@@ -37,7 +37,9 @@ function slugify(text, options = {}) {
   const { maxLength, cut = "word" } = options;
   if (maxLength !== undefined) {
     if (!Number.isInteger(maxLength) || maxLength < 1) {
-      throw new RangeError("maxLength must be a positive integer");
+      throw new RangeError(
+        `maxLength must be a positive integer, got ${String(maxLength)}`,
+      );
     }
   }
   if (cut !== "word" && cut !== "hard") {
