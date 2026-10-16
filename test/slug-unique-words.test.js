@@ -10,6 +10,10 @@ test("removes repeated words keeping the first occurrence", () => {
   assert.equal(slugUniqueWords("the cat and the hat and the bat"), "the-cat-and-hat-bat");
 });
 
+test("a word repeated three times in a row collapses to one", () => {
+  assert.equal(slugUniqueWords("go go go stop"), "go-stop");
+});
+
 test("text with no repeats returns its slug", () => {
   assert.equal(slugUniqueWords("Hello Big World"), "hello-big-world");
 });
